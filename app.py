@@ -49,7 +49,7 @@ def add_item():
 
     item_name = request.form["item_name"] 
 
-    categoty = request.form["category"]
+    category = request.form["category"]
 
     location_found = request.form["location_found"] 
 
