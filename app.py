@@ -20,6 +20,8 @@ def create_database():
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
 
             item_name TEXT NOT NULL, 
+            
+            category TEXT NOT NULL,
 
             location_found TEXT NOT NULL, 
 
@@ -47,6 +49,8 @@ def add_item():
 
     item_name = request.form["item_name"] 
 
+    categoty = request.form["category"]
+
     location_found = request.form["location_found"] 
 
     date_found = request.form["date_found"] 
@@ -59,11 +63,11 @@ def add_item():
 
     cursor.execute(""" 
 
-        INSERT INTO items (item_name, location_found, date_found, description) 
+        INSERT INTO items (item_name, category, location_found, date_found, description) 
 
-        VALUES (?, ?, ?, ?) 
+        VALUES (?, ?, ?, ?, ?) 
 
-    """, (item_name, location_found, date_found, description)) 
+    """, (item_name, category, location_found, date_found, description)) 
 
     connection.commit() 
 
