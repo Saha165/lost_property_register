@@ -6,7 +6,6 @@ app = Flask(__name__)
 
 DATABASE = "lost_property.db" 
 
-  
 
 def create_database(): 
 
@@ -36,17 +35,11 @@ def create_database():
 
     connection.close() 
 
-  
-
-   
-
 @app.route("/") 
 
 def index(): 
 
     return render_template("index.html") 
-
-  
 
 @app.route("/add", methods=["POST"]) 
 
@@ -60,13 +53,9 @@ def add_item():
 
     description = request.form["description"] 
 
-  
-
     connection = sqlite3.connect(DATABASE) 
 
     cursor = connection.cursor() 
-
-  
 
     cursor.execute(""" 
 
@@ -76,15 +65,11 @@ def add_item():
 
     """, (item_name, location_found, date_found, description)) 
 
-  
-
     connection.commit() 
 
     connection.close() 
 
     return redirect("/items") 
-
-  
 
 @app.route("/items") 
 
@@ -102,9 +87,6 @@ def view_items():
 
     return render_template("items.html", items=items) 
 
-  
-
-  
 
 if __name__ == "__main__": 
 
