@@ -8,92 +8,95 @@ DATABASE = "lost_property.db"
 
 
 def create_database(): 
-
+    
     connection = sqlite3.connect(DATABASE) 
-
+    
     cursor = connection.cursor() 
-
+    
     cursor.execute(""" 
-
+    
         CREATE TABLE IF NOT EXISTS items ( 
-
+        
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
-
+            
             item_name TEXT NOT NULL, 
             
-            category TEXT NOT NULL,
-
+            category TEXT NOT NULL, 
+            
             location_found TEXT NOT NULL, 
-
+            
             date_found TEXT NOT NULL, 
-
-            description TEXT NOT NULL 
-
+            
+            description TEXT NOT NULL, 
+            
+            claimed TEXT NOT NULL 
         ) 
-
     """) 
-
+    
     connection.commit() 
-
+    
     connection.close() 
-
+    
 @app.route("/") 
-
+    
 def index(): 
-
+        
     return render_template("index.html") 
-
+        
+        
 @app.route("/add", methods=["POST"]) 
-
+    
 def add_item(): 
-
+        
     item_name = request.form["item_name"] 
-
-    category = request.form["category"]
-
+        
+    category = request.form["category"] 
+        
+    claimed = request.form["claimed"] 
+        
     location_found = request.form["location_found"] 
-
+        
     date_found = request.form["date_found"] 
-
+        
     description = request.form["description"] 
-
+        
     connection = sqlite3.connect(DATABASE) 
-
+        
     cursor = connection.cursor() 
-
+        
     cursor.execute(""" 
-
-        INSERT INTO items (item_name, category, location_found, date_found, description) 
-
-        VALUES (?, ?, ?, ?, ?) 
-
-    """, (item_name, category, location_found, date_found, description)) 
-
+        
+        INSERT INTO items (item_name, category, location_found, date_found, description, claimed) 
+            
+        VALUES (?, ?, ?, ?, ?, ?) 
+            
+        """, (item_name, category, location_found, date_found, description, claimed)) 
+            
     connection.commit() 
-
+            
     connection.close() 
-
+    
     return redirect("/items") 
-
+    
 @app.route("/items") 
 
 def view_items(): 
 
     connection = sqlite3.connect(DATABASE) 
-
+    
     cursor = connection.cursor() 
-
+    
     cursor.execute("SELECT * FROM items") 
-
+    
     items = cursor.fetchall() 
-
+    
     connection.close() 
-
+    
     return render_template("items.html", items=items) 
-
+    
 
 if __name__ == "__main__": 
-
+    
     create_database() 
-
+    
     app.run(debug=True)
